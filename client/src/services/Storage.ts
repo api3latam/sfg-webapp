@@ -17,7 +17,9 @@ export class LocalStorage {
   supported: boolean;
 
   constructor() {
-    this.supported = typeof window['localStorage'] !== "undefined" && window['localStorage'] !== null;
+    this.supported =
+      typeof window["localStorage"] !== "undefined" &&
+      window["localStorage"] !== null;
   }
 
   add(key: string, item: string) {
@@ -34,10 +36,12 @@ export class LocalStorage {
       }
       const value = localStorage.getItem(key);
 
-      list.push(new StorageItem({
-        key: key,
-        value: value
-      }));
+      list.push(
+        new StorageItem({
+          key: key,
+          value: value,
+        })
+      );
     }
 
     return list;
