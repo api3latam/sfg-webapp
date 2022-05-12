@@ -5,7 +5,7 @@ import {
   WEB3_ERROR,
   WEB3_CHAIN_ID_LOADED,
   WEB3_ACCOUNT_LOADED,
-} from "../actions/web3";
+} from '../actions/web3';
 
 export interface Web3State {
   initializing: boolean;
@@ -23,10 +23,7 @@ const initialState: Web3State = {
   account: undefined,
 };
 
-export const web3Reducer = (
-  state: Web3State = initialState,
-  action: Web3Actions
-): Web3State => {
+export const web3Reducer = (action: Web3Actions, state: Web3State = initialState): Web3State => {
   switch (action.type) {
     case WEB3_INITIALIZING: {
       return {
@@ -67,7 +64,7 @@ export const web3Reducer = (
         account: action.account,
       };
     }
+    default:
+      return state;
   }
-
-  return state;
 };

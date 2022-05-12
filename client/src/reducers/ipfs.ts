@@ -4,7 +4,7 @@ import {
   IPFS_INITIALIZED,
   IPFS_FILE_SAVED,
   IPFSActions,
-} from "../actions/ipfs";
+} from '../actions/ipfs';
 
 export interface IPFSState {
   initializing: boolean;
@@ -20,10 +20,7 @@ const initialState: IPFSState = {
   lastFileSavedURL: undefined,
 };
 
-export const ipfsReducer = (
-  state: IPFSState = initialState,
-  action: IPFSActions
-): IPFSState => {
+export const ipfsReducer = (action: IPFSActions, state: IPFSState = initialState): IPFSState => {
   switch (action.type) {
     case IPFS_INITIALIZING: {
       return {
@@ -56,7 +53,9 @@ export const ipfsReducer = (
         lastFileSavedURL: action.url,
       };
     }
-  }
 
-  return state;
+    default: {
+      return state;
+    }
+  }
 };

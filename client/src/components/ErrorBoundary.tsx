@@ -1,11 +1,11 @@
 import React from 'react';
 
 interface Props {
-  children: JSX.Element
+  children: JSX.Element;
 }
 
 interface State {
-  hasError: boolean
+  hasError: boolean;
 }
 
 class ErrorBoundary extends React.Component<Props, State> {
@@ -24,9 +24,11 @@ class ErrorBoundary extends React.Component<Props, State> {
 
   render() {
     if (this.state.hasError) {
-      return <div>
-        <p>Something went wrong.</p>
-      </div>;
+      return (
+        <div>
+          <p>Something went wrong.</p>
+        </div>
+      );
     }
 
     return this.props.children;

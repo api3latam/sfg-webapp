@@ -5,6 +5,7 @@ export interface IStorageItem {
 
 export class StorageItem {
   key: string;
+
   value: any;
 
   constructor(data: IStorageItem) {
@@ -17,9 +18,7 @@ export class LocalStorage {
   supported: boolean;
 
   constructor() {
-    this.supported =
-      typeof window["localStorage"] !== "undefined" &&
-      window["localStorage"] !== null;
+    this.supported = typeof window.localStorage !== 'undefined' && window.localStorage !== null;
   }
 
   add(key: string, item: string) {
@@ -38,9 +37,9 @@ export class LocalStorage {
 
       list.push(
         new StorageItem({
-          key: key,
-          value: value,
-        })
+          key,
+          value,
+        }),
       );
     }
 

@@ -1,8 +1,4 @@
-import {
-  NewGrantActions,
-  NEW_GRANT_CREATED,
-  NEW_GRANT_TX_STATUS,
-} from "../actions/newGrant";
+import { NewGrantActions, NEW_GRANT_CREATED, NEW_GRANT_TX_STATUS } from '../actions/newGrant';
 
 export interface NewGrant {
   id: number;
@@ -20,8 +16,8 @@ const initialState: NewGrantState = {
 };
 
 export const newGrantReducer = (
+  action: NewGrantActions,
   state: NewGrantState = initialState,
-  action: NewGrantActions
 ): NewGrantState => {
   switch (action.type) {
     case NEW_GRANT_CREATED: {
@@ -44,7 +40,9 @@ export const newGrantReducer = (
         txStatus: action.status,
       };
     }
-  }
 
-  return initialState;
+    default: {
+      return state;
+    }
+  }
 };

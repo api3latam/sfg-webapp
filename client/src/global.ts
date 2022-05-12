@@ -1,4 +1,4 @@
-import { Web3Provider } from "@ethersproject/providers";
+import { Web3Provider } from '@ethersproject/providers';
 
 export interface Global {
   web3Provider: Web3Provider | undefined;
