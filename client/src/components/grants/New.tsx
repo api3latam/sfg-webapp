@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
+import Grid from "@mui/material/Grid";
 import { TextInput, RadioInput } from "./inputs";
 import { startIPFS, saveFileToIPFS } from "../../actions/ipfs";
 import { RootState } from "../../reducers";
@@ -115,14 +116,18 @@ function NewGrant() {
 
   return (
     <form onSubmit={(e) => e.preventDefault()}>
-      {textInputs.map((input) => (
-        <TextInput
-          key={input.name}
-          label={input.label}
-          name={input.name}
-          changeHandler={(e) => handleInput(e)}
-        />
-      ))}
+      <Grid container spacing={2}>
+        {textInputs.map((input) => (
+          <Grid item lg={4}>
+            <TextInput
+              key={input.name}
+              label={input.label}
+              name={input.name}
+              changeHandler={(e) => handleInput(e)}
+            />
+          </Grid>
+        ))}
+      </Grid>
       Have you raised external funding?
       {formInputs.receivedFunding ? "Yes" : "No"}
       {radioInputs.map((input) => (

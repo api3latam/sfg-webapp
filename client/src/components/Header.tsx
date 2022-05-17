@@ -1,6 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
+import Button from "@mui/material/Button";
+import ButtonGroup from "@mui/material/ButtonGroup";
 import { RootState } from "../reducers";
 import { initializeWeb3 } from "../actions/web3";
 import { grantsPath, newGrantPath } from "../routes";
@@ -45,14 +47,14 @@ export default function Header() {
           </div>
         )}
       </div>
-      <ul>
-        <li>
+      <ButtonGroup>
+        <Button>
           <Link to={grantsPath()}>Grants</Link>
-        </li>
-        <li>
+        </Button>
+        <Button>
           <Link to={newGrantPath()}>Create a Grant</Link>
-        </li>
-      </ul>
+        </Button>
+      </ButtonGroup>
     </header>
   );
 }

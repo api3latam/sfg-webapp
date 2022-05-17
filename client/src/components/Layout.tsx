@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
+import { Container } from "@mui/material";
 import { RootState } from "../reducers";
 import Header from "./Header";
 import { initializeWeb3 } from "../actions/web3";
@@ -43,23 +44,27 @@ function Layout(ownProps: Props) {
 
   return (
     <div>
-      <Header />
+      <Container maxWidth="lg">
+        <Header />
+      </Container>
       <hr />
 
       <main>
-        {!props.web3Error && props.web3Initialized && children}
+        <Container maxWidth="lg">
+          {!props.web3Error && props.web3Initialized && children}
 
-        {props.web3Error !== undefined && (
-          <div>
-            <div>{props.web3Error}</div>
-          </div>
-        )}
+          {props.web3Error !== undefined && (
+            <div>
+              <div>{props.web3Error}</div>
+            </div>
+          )}
 
-        {!props.web3Initialized && (
-          <button type="button" onClick={connectHandler}>
-            CONNECT
-          </button>
-        )}
+          {!props.web3Initialized && (
+            <button type="button" onClick={connectHandler}>
+              CONNECT
+            </button>
+          )}
+        </Container>
       </main>
 
       <hr />
