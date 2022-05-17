@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
+import { Container } from "@chakra-ui/react";
 import { RootState } from "../reducers";
 import Header from "./Header";
 import { initializeWeb3 } from "../actions/web3";
@@ -43,27 +44,33 @@ function Layout(ownProps: Props) {
 
   return (
     <div>
-      <Header />
+      <Container maxW="1140px">
+        <Header />
+      </Container>
       <hr />
 
       <main>
-        {!props.web3Error && props.web3Initialized && children}
+        <Container maxW="1140px">
+          {!props.web3Error && props.web3Initialized && children}
 
-        {props.web3Error !== undefined && (
-          <div>
-            <div>{props.web3Error}</div>
-          </div>
-        )}
+          {props.web3Error !== undefined && (
+            <div>
+              <div>{props.web3Error}</div>
+            </div>
+          )}
 
-        {!props.web3Initialized && (
-          <button type="button" onClick={connectHandler}>
-            CONNECT
-          </button>
-        )}
+          {!props.web3Initialized && (
+            <button type="button" onClick={connectHandler}>
+              CONNECT
+            </button>
+          )}
+        </Container>
       </main>
 
       <hr />
-      <footer>FOOTER</footer>
+      <footer>
+        <Container maxW="1140px">FOOTER</Container>
+      </footer>
     </div>
   );
 }

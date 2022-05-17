@@ -1,3 +1,5 @@
+import { Input } from "@chakra-ui/react";
+
 type InputProps = {
   label: string;
   name: string;
@@ -15,7 +17,7 @@ export function TextInput(props: InputProps) {
   return (
     <div style={{ display: "block" }}>
       <label htmlFor={label}>{label}</label>
-      <input
+      <Input
         id={label}
         style={{ display: "block" }}
         type="text"

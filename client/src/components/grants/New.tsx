@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
+import { Button, SimpleGrid } from "@chakra-ui/react";
 import { TextInput, RadioInput } from "./inputs";
 import { startIPFS, saveFileToIPFS } from "../../actions/ipfs";
 import { RootState } from "../../reducers";
@@ -115,27 +116,29 @@ function NewGrant() {
 
   return (
     <form onSubmit={(e) => e.preventDefault()}>
-      {textInputs.map((input) => (
-        <TextInput
-          key={input.name}
-          label={input.label}
-          name={input.name}
-          changeHandler={(e) => handleInput(e)}
-        />
-      ))}
-      Have you raised external funding?
-      {formInputs.receivedFunding ? "Yes" : "No"}
-      {radioInputs.map((input) => (
-        <RadioInput
-          key={`radio-${input.value}`}
-          name={input.name}
-          value={input.value}
-          changeHandler={(e) => handleInput(e)}
-        />
-      ))}
-      <button type="button" disabled={disabled} onClick={saveGrantDataToIPFS}>
+      <SimpleGrid columns={2} spacingX="40px" spacingY="20px">
+        {textInputs.map((input) => (
+          <TextInput
+            key={input.name}
+            label={input.label}
+            name={input.name}
+            changeHandler={(e) => handleInput(e)}
+          />
+        ))}
+        Have you raised external funding?
+        {formInputs.receivedFunding ? "Yes" : "No"}
+        {radioInputs.map((input) => (
+          <RadioInput
+            key={`radio-${input.value}`}
+            name={input.name}
+            value={input.value}
+            changeHandler={(e) => handleInput(e)}
+          />
+        ))}
+      </SimpleGrid>
+      <Button isDisabled={disabled} onClick={saveGrantDataToIPFS}>
         Save Grant Data
-      </button>
+      </Button>
     </form>
   );
 }

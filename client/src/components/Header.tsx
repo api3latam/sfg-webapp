@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
+import { Button, ButtonGroup } from "@chakra-ui/react";
 import { RootState } from "../reducers";
 import { initializeWeb3 } from "../actions/web3";
 import { grantsPath, newGrantPath } from "../routes";
@@ -39,20 +40,18 @@ export default function Header() {
 
         {!props.web3Initialized && (
           <div>
-            <button type="button" onClick={connectHandler}>
-              CONNECT
-            </button>
+            <Button onClick={connectHandler}>CONNECT</Button>
           </div>
         )}
       </div>
-      <ul>
-        <li>
+      <ButtonGroup gap="4">
+        <Button>
           <Link to={grantsPath()}>Grants</Link>
-        </li>
-        <li>
+        </Button>
+        <Button>
           <Link to={newGrantPath()}>Create a Grant</Link>
-        </li>
-      </ul>
+        </Button>
+      </ButtonGroup>
     </header>
   );
 }

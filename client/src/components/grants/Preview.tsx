@@ -1,6 +1,7 @@
 // import { useEffect} from 'react'
 import { Link } from "react-router-dom";
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
+import { Button } from "@chakra-ui/react";
 import { FormInputs } from "./New";
 import { createGrant } from "../../actions/newGrant";
 import { RootState } from "../../reducers";
@@ -62,14 +63,16 @@ function GrantPreview({ grant, url }: { grant: FormInputs; url: string }) {
       {!props.txStatus ? (
         <>
           <div>Does everything look good?</div>
-          <button type="button" onClick={() => dispatch(createGrant())}>
+          <Button onClick={() => dispatch(createGrant())}>
             Save and Publish
-          </button>
+          </Button>
         </>
       ) : (
         <Loading status={props.txStatus} />
       )}
-      <Link to="/">Return to home page</Link>
+      <Button>
+        <Link to="/">Return to home page</Link>
+      </Button>
     </>
   );
 }

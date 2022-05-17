@@ -14,6 +14,7 @@ import {
   createRouterMiddleware,
   ReduxRouter,
 } from "@lagunovsky/redux-react-router";
+import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 import { createRootReducer } from "./reducers";
 import ErrorBoundary from "./components/ErrorBoundary";
 import "./index.css";
@@ -49,21 +50,54 @@ const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 
+const theme = extendTheme({
+  components: {
+    initialColorMode: "light",
+    Button: {
+      // 1. We can update the base styles
+      baseStyle: {
+        fontWeight: "bold", // Normally, it is "semibold"
+      },
+      // 2. We can add a new button size or extend existing
+      sizes: {
+        xl: {
+          h: "56px",
+          fontSize: "lg",
+          px: "32px",
+        },
+      },
+      // 3. We can add a new visual variant
+      variants: {
+        "with-shadow": {
+          bg: "red.400",
+          boxShadow: "0 0 2px 2px #efdfde",
+        },
+        // 4. We can override existing variants
+        solid: (props: any) => ({
+          bg: props.colorMode === "dark" ? "green.300" : "green.500",
+        }),
+      },
+    },
+  },
+});
+
 root.render(
   // <React.StrictMode>
   <ErrorBoundary>
-    <Provider store={store}>
-      <ReduxRouter history={history} store={store}>
-        <Layout>
-          <Routes>
-            <Route path={slugs.root} element={<div>Home</div>} />
-            <Route path={slugs.grants} element={<GrantsList />} />
-            <Route path={slugs.grant} element={<GrantsShow />} />
-            <Route path={slugs.newGrant} element={<CreatGrant />} />
-          </Routes>
-        </Layout>
-      </ReduxRouter>
-    </Provider>
+    <ChakraProvider resetCSS theme={theme}>
+      <Provider store={store}>
+        <ReduxRouter history={history} store={store}>
+          <Layout>
+            <Routes>
+              <Route path={slugs.root} element={<div>Home</div>} />
+              <Route path={slugs.grants} element={<GrantsList />} />
+              <Route path={slugs.grant} element={<GrantsShow />} />
+              <Route path={slugs.newGrant} element={<CreatGrant />} />
+            </Routes>
+          </Layout>
+        </ReduxRouter>
+      </Provider>
+    </ChakraProvider>
   </ErrorBoundary>
   // </React.StrictMode>
 );
