@@ -1,6 +1,6 @@
 specVersion: 0.0.4
 schema:
-  file: ./src/schema.graphql
+  file: schema.graphql
 dataSources:
   - kind: ethereum/contract
     name: ProjectRegistry
@@ -17,8 +17,8 @@ dataSources:
         - Sender
       abis:
         - name: ProjectRegistry
-          file: ./abis/ProjectRegistry.json
+          file: ProjectRegistry/abis/ProjectRegistry.json
       eventHandlers:
         - event: ProjectCreated(indexed address,uint96)
           handler: handleProjectCreated
-      file: ./src/project-registry.ts
+      file: ProjectRegistry/ProjectRegistry.wasm

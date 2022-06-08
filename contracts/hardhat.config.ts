@@ -28,7 +28,7 @@ const config: HardhatUserConfig = {
     goerli: {
       url: process.env.GOERLI_URL || "",
       accounts: {
-        mnemonic: process.env.MNEMONIC,
+        mnemonic: process.env.DEV_MNEMONIC,
       },
     },
   },
