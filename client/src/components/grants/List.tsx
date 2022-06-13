@@ -7,6 +7,7 @@ import { loadProjects, unloadProjects } from "../../actions/projects";
 import Globe from "../icons/Globe";
 import Button, { ButtonVariants } from "../base/Button";
 import Card from "./Card";
+import { ProjectEvent } from "../../types";
 
 function ProjectsList() {
   const dispatch = useDispatch();
@@ -39,8 +40,8 @@ function ProjectsList() {
           <div className="grow">
             {props.grants.length ? (
               <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
-                {props.grants.map((item: number) => (
-                  <Card projectId={item} key={item} />
+                {props.grants.map((event: ProjectEvent) => (
+                  <Card projectId={event.id} key={event.id} />
                 ))}
               </div>
             ) : (
