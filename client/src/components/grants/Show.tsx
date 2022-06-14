@@ -1,16 +1,22 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import { grantsPath, editPath } from "../../routes";
 import { RootState } from "../../reducers";
 import { fetchGrantData } from "../../actions/grantsMetadata";
 import Button, { ButtonVariants } from "../base/Button";
+import { global } from "../../global";
 import Pencil from "../icons/Pencil";
 import colors from "../../styles/colors";
 import LinkIcon from "../icons/LinkIcon";
 import Arrow from "../icons/Arrow";
+import { ProjectEvent } from "../../types";
+import { loadProjects } from "../../actions/projects";
+import Calendar from "../icons/Calendar";
 
 function Project() {
+  const [updatedAt, setUpdated] = useState("");
+
   const dispatch = useDispatch();
   // FIXME: params.id doesn't change if the location hash is changed manually.
   const params = useParams();
@@ -21,6 +27,7 @@ function Project() {
       id: params.id,
       loading: grantMetadata ? grantMetadata.loading : false,
       currentGrant: grantMetadata?.metadata,
+      projects: state.projects.projects,
       ipfsInitialized: state.ipfs.initialized,
       ipfsInitializationError: state.ipfs.initializationError,
     };
@@ -34,6 +41,35 @@ function Project() {
       dispatch(fetchGrantData(Number(params.id)));
     }
   }, [dispatch, props.ipfsInitialized, params.id, props.currentGrant]);
+
+  useEffect(() => {
+    async function fetchTimeStamp(projects: ProjectEvent[], projectId: string) {
+      if (global) {
+        const currentProject = projects.find(
+          (project) => project.id === Number(projectId)
+        );
+        if (currentProject) {
+          const blockData = await global.web3Provider?.getBlock(
+            currentProject.block
+          );
+
+          if (!blockData) {
+            dispatch(loadProjects());
+            return;
+          }
+
+          const formattedDate = new Date(
+            (blockData?.timestamp ?? 0) * 1000
+          ).toLocaleString();
+
+          setUpdated(formattedDate);
+        }
+      }
+    }
+    if (props.id) {
+      fetchTimeStamp(props.projects, props.id);
+    }
+  }, [props.id, global, dispatch]);
 
   if (props.currentGrant === undefined && props.ipfsInitializationError) {
     return <>Error initializing IPFS. Reload the page and try again.</>;
@@ -71,23 +107,34 @@ function Project() {
               </Link>
             )}
           </div>
-          <div className="w-full md:w-2/3">
+          <div className="w-full md:w-2/3 mb-40">
             <img
               className="w-full mb-4"
               src="./assets/card-img.png"
               alt="project banner"
             />
             <h4 className="mb-4">{props.currentGrant.title}</h4>
-            <div className="flex items-center pb-6 mb-6 border-b">
-              <LinkIcon color={colors["secondary-text"]} />{" "}
-              <p className="ml-1">{props.currentGrant.website}</p>
-              {/* TODO add created at updated timestamp */}
+            <div className="flex justify-start border-b  pb-6 mb-6">
+              <a
+                target="_blank"
+                href={props.currentGrant.website}
+                className="flex items-center text-sm mr-6"
+                rel="noreferrer"
+              >
+                <LinkIcon color={colors["secondary-text"]} />{" "}
+                <p className="ml-1">{props.currentGrant.website}</p>
+                {/* TODO add created at updated timestamp */}
+              </a>
+              <p className="flex text-sm">
+                <Calendar color={colors["secondary-text"]} /> {updatedAt}
+              </p>
             </div>
+
             <p className="text-xs text-primary-text mb-1">Description</p>
             <p className="mb-12">{props.currentGrant.description}</p>
             <p className="text-xs text-primary-text mb-1">Project Roadmap</p>
             <p className="mb-12">{props.currentGrant.roadmap}</p>
-            <p className="text-xs text-primary-text mb-1">Project Roadmap</p>
+            <p className="text-xs text-primary-text mb-1">Project Challenges</p>
             <p className="mb-12">{props.currentGrant.challenges}</p>
           </div>
         </>
