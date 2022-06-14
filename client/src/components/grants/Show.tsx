@@ -88,14 +88,14 @@ function Project() {
       {props.currentGrant && (
         <>
           <div className="flex justify-between items-center mb-6">
-            <h3 className="flex">
-              <div className="pt-2 mr-2">
-                <Link to={grantsPath()}>
-                  <Arrow color={colors["primary-text"]} />
-                </Link>{" "}
-              </div>
-              Project Details
-            </h3>
+            <Link to={grantsPath()}>
+              <h3 className="flex">
+                <div className="pt-2 mr-2">
+                  <Arrow color={colors["primary-text"]} />{" "}
+                </div>
+                Project Details
+              </h3>
+            </Link>
             {props.id && (
               <Link to={editPath(props.id)}>
                 <Button variant={ButtonVariants.outline}>
