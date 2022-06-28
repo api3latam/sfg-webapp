@@ -76,9 +76,6 @@ export const loadProjects =
     );
 
     const createdFilter = contract.filters.ProjectCreated(state.web3.account);
-    const metadataFilter = contract.filters.MetaDataUpdated(state.web3.account);
-
-    const metadataEvents = await contract.queryFilter(metadataFilter);
     const createdEvents = await contract.queryFilter(createdFilter);
 
     const createdIds: ProjectEvent[] = createdEvents.map((event: any) => ({
@@ -86,8 +83,12 @@ export const loadProjects =
       block: event.blockNumber,
     }));
 
-    const updateIds: ProjectEvent[] = metadataEvents.map((event: any) => ({
-      id: BigNumber.from(event.args[1]).toNumber(),
+    const ids = createdIds.map((item) => ethers.utils.hexlify(item.id));
+    const metadataFilter = contract.filters.MetadataUpdated(ids);
+    const metadataEvents = await contract.queryFilter(metadataFilter);
+
+    const updateIds = metadataEvents.map((event: any) => ({
+      id: BigNumber.from(event.args.projectID).toNumber(),
       block: event.blockNumber,
     }));
     const events = aggregateEvents(createdIds, updateIds);
