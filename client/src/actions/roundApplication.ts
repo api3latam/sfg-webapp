@@ -35,6 +35,11 @@ const submitApplication = async (
     return {};
   }
 
+  if (roundApplicationMetadata.applicationSchema === undefined) {
+    roundApplicationMetadata.applicationSchema =
+      roundApplicationMetadata.application_schema;
+  }
+
   // const { projectQuestionId } = roundApplicationMetadata;
   const projectQuestionId = roundApplicationMetadata.applicationSchema.length;
 
