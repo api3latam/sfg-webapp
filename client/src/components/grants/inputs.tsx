@@ -1,6 +1,7 @@
 import { InputProps, ProjectOption } from "../../types";
 
 export function TextInput({
+  id,
   label,
   info,
   name,
@@ -17,7 +18,7 @@ export function TextInput({
       <legend>{info}</legend>
       <input
         type="text"
-        id={label}
+        id={id}
         name={name}
         value={value ?? ""}
         placeholder={placeholder}
@@ -29,6 +30,7 @@ export function TextInput({
 }
 
 export function WebsiteInput({
+  id,
   label,
   name,
   value,
@@ -57,7 +59,7 @@ export function WebsiteInput({
         <input
           type="text"
           className="rounded"
-          id={label}
+          id={id}
           name={name}
           value={value ?? ""}
           placeholder="https://gitcoin.co/"
@@ -70,6 +72,7 @@ export function WebsiteInput({
 }
 
 export function TextArea({
+  id,
   label,
   info,
   name,
@@ -85,7 +88,7 @@ export function TextArea({
       </label>
       <legend>{info}</legend>
       <textarea
-        id={label}
+        id={id}
         name={name}
         placeholder={placeholder}
         value={value ?? ""}
@@ -101,6 +104,7 @@ type SelectInputProps = InputProps & {
 };
 
 export function Select({
+  id,
   label,
   info,
   name,
@@ -115,7 +119,7 @@ export function Select({
       </label>
       <legend>{info}</legend>
       <select
-        id={name}
+        id={id}
         name={name}
         disabled={disabled}
         onChange={(e) => changeHandler(e)}

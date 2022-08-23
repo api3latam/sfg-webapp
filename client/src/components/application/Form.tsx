@@ -51,6 +51,7 @@ export default function Form({
   const [schema, setSchema] = useState<RoundApplicationQuestion[]>([]);
 
   const handleInput = (e: ChangeHandlers) => {
+    console.log("EVENT", e);
     const { value } = e.target;
     setFormInputs({ ...formInputs, [e.target.name]: value });
   };
@@ -151,8 +152,14 @@ export default function Form({
 
     setProjectOptions(currentOptions);
 
+    const roundApp = roundApplication;
+
+    if (roundApp.applicationSchema === undefined) {
+      roundApp.applicationSchema = roundApplication.application_schema;
+    }
+
     const projectQuestion: RoundApplicationQuestion = {
-      id: roundApplication.applicationSchema.length,
+      id: roundApp.applicationSchema.length,
       question: "Select a project you would like to apply for funding:",
       type: "PROJECT", // this will be a limited set [TEXT, TEXTAREA, RADIO, MULTIPLE]
       required: true,
@@ -160,7 +167,7 @@ export default function Form({
       choices: currentOptions?.map((option) => option.title!),
     };
 
-    setSchema([projectQuestion, ...roundApplication.applicationSchema]);
+    setSchema([projectQuestion, ...roundApp.applicationSchema]);
 
     setLoading(false);
   }
@@ -169,17 +176,21 @@ export default function Form({
     fetchAllProjects();
   }, [grantHubClient]);
 
+  console.log("SCHEMA", schema);
+
   return loading ? (
     <TextLoading />
   ) : (
     <div className="border-0 sm:border sm:border-solid border-tertiary-text rounded text-primary-text p-0 sm:p-4">
       <form onSubmit={(e) => e.preventDefault()}>
-        {schema.map((input) => {
+        {schema.map((input, index) => {
+          const idx = index > 0 ? index - 1 : index;
           switch (input.type) {
             case "PROJECT":
               return (
                 <>
                   <Select
+                    id={input.id.toString()}
                     key={input.id}
                     name={`${input.id}`}
                     label={input.question}
@@ -198,11 +209,12 @@ export default function Form({
             case "RECIPIENT": // FIXME: separate RECIPIENT to have address validation
               return (
                 <TextInput
-                  key={input.id}
+                  id={`${input.id ?? idx}`}
+                  key={input.id ?? idx}
                   label={input.question}
                   placeholder={input.info}
-                  name={`${input.id}`}
-                  value={formInputs[`${input.id}`] ?? ""}
+                  name={`${input.id ?? idx}`}
+                  value={formInputs[`${input.id ?? idx}`] ?? ""}
                   disabled={preview}
                   changeHandler={handleInput}
                 />
@@ -210,11 +222,12 @@ export default function Form({
             case "TEXTAREA":
               return (
                 <TextArea
-                  key={input.id}
+                  id={`${input.id ?? idx}`}
+                  key={input.id ?? idx}
                   label={input.question}
                   placeholder={input.info}
-                  name={`${input.id}`}
-                  value={formInputs[`${input.id}`] ?? ""}
+                  name={`${input.id ?? idx}`}
+                  value={formInputs[`${input.id ?? idx}`] ?? ""}
                   disabled={preview}
                   changeHandler={handleInput}
                 />
@@ -222,11 +235,12 @@ export default function Form({
             case "RADIO":
               return (
                 <Radio
-                  key={input.id}
+                  id={`${input.id ?? idx}`}
+                  key={input.id ?? idx}
                   label={input.question}
-                  name={`${input.id}`}
+                  name={`${input.id ?? idx}`}
                   value={
-                    formInputs[`${input.id}`] ??
+                    formInputs[`${input.id ?? idx}`] ??
                     (input.choices && input.choices[0])
                   }
                   choices={input.choices}
@@ -248,11 +262,12 @@ export default function Form({
             default:
               return (
                 <TextInput
+                  id={`${input.id ?? idx}`}
                   key={input.id}
                   label={input.question}
                   placeholder={input.info}
-                  name={`${input.id}`}
-                  value={formInputs[`${input.id}`] ?? ""}
+                  name={`${input.id ?? idx}`}
+                  value={formInputs[`${input.id ?? idx}`] ?? ""}
                   disabled={preview}
                   changeHandler={handleInput}
                 />

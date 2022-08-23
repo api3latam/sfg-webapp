@@ -86,6 +86,7 @@ export const getRoundApplicationMetadata = async (
   const pinataClient = new PinataClient();
   try {
     const resp = await pinataClient.fetchText(pointer);
+    console.log("JSON", resp);
     return JSON.parse(resp) as RoundApplicationMetadata;
   } catch (e) {
     console.error(e);

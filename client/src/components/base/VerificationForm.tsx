@@ -45,6 +45,7 @@ export default function VerificationForm({
         />
         <TextInput
           disabled
+          id="github"
           label="Github"
           info="Connect your project’s GitHub account to verify (Optional)"
           name="github"
@@ -67,6 +68,7 @@ export default function VerificationForm({
         />
         <TextInput
           disabled
+          id="twitter"
           label="Twitter"
           info="Connect your project’s Twitter account to verify (Optional)"
           name="twitter"

@@ -76,6 +76,7 @@ function Apply() {
 
     roundInfo.round.applicationMetadata = roundApplicationMetadata;
     roundInfo.round.metadata = roundMetadata;
+    console.log("METADATA", roundInfo);
     setRoundData(roundInfo.round);
     setLoading(false);
   }
@@ -84,34 +85,6 @@ function Apply() {
     fetchRound();
   }, [roundId, roundManagerClient]);
 
-  /*
-  if (props.roundStatus === RoundStatus.Error) {
-    return <div>Error loading round data: {props.roundError}</div>;
-  }
-
-  if (props.roundStatus !== RoundStatus.Loaded) {
-    return <div>loading...</div>;
-  }
-
-  if (props.roundState === undefined || props.round === undefined) {
-    return <div>something went wrong</div>;
-  }
-
-  if (props.applicationStatus === ApplicationStatus.Error) {
-    return (
-      <div>Error submitting round application: {props.applicationError}</div>
-    );
-  }
-
-  if (props.applicationStatus === ApplicationStatus.Sent) {
-    setRoundToApply(null);
-    return <div>Applied to round successfully.</div>;
-  }
-
-  if (props.applicationStatus !== ApplicationStatus.Undefined) {
-    return <div>sending application...</div>;
-  }
-*/
   function roundTimeInfo(): JSX.Element {
     if (
       roundData &&

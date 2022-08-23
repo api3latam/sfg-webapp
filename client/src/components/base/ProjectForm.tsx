@@ -111,6 +111,7 @@ function ProjectForm({
     <div className="border-0 sm:border sm:border-solid border-tertiary-text rounded text-primary-text p-0 sm:p-4">
       <form onSubmit={(e) => e.preventDefault()}>
         <TextInput
+          id="title"
           label="Project Name"
           name="title"
           placeholder="What's the project name?"
@@ -118,6 +119,7 @@ function ProjectForm({
           changeHandler={handleInput}
         />
         <WebsiteInput
+          id="website"
           label="Project Website"
           name="website"
           value={formInputs?.website}
@@ -143,6 +145,7 @@ function ProjectForm({
           imgHandler={(buffer: Blob) => setBannerImg(buffer)}
         />
         <TextInput
+          id="projectTwitter"
           label="Project Twitter"
           name="projectTwitter"
           placeholder="twitterusername"
@@ -150,6 +153,7 @@ function ProjectForm({
           changeHandler={handleInput}
         />
         <TextInput
+          id="userGithub"
           label="Your Github Username"
           name="userGithub"
           placeholder="githubusername"
@@ -157,6 +161,7 @@ function ProjectForm({
           changeHandler={handleInput}
         />
         <TextInput
+          id="projectGithub"
           label="Project Github Organization"
           name="projectGithub"
           placeholder="githuborgname"
@@ -164,6 +169,7 @@ function ProjectForm({
           changeHandler={handleInput}
         />
         <TextArea
+          id="description"
           label="Project Description"
           name="description"
           placeholder="What is the project about and what kind of impact does it aim to have?"
