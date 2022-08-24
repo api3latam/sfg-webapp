@@ -11,8 +11,6 @@ export default function useLocalStorage(key: string, defaultValue: any): any[] {
       const item = localStorage.get(key);
       return item ?? defaultValue;
     } catch (error) {
-      dataDog.addError(error);
-      console.error(error);
       return defaultValue;
     }
   });

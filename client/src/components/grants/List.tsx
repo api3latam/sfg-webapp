@@ -1,13 +1,17 @@
-import { formatBytes32String } from "ethers/lib/utils";
+import {
+  base64,
+  formatBytes32String,
+  parseBytes32String,
+} from "ethers/lib/utils";
 import { useEffect, useState } from "react";
 import { useDatadogRum } from "react-datadog";
 import { Link, useNavigate } from "react-router-dom";
+// import { ethers } from "ethers";
 import { useAccount, useNetwork } from "wagmi";
 import colors from "../../styles/colors";
 import Button, { ButtonVariants } from "../base/Button";
 import Globe from "../icons/Globe";
 import Card from "./Card";
-
 import { getRoundMetadata } from "../../actions/rounds";
 import { useClients } from "../../hooks/useDataClient";
 import useLocalStorage from "../../hooks/useLocalStorage";
@@ -31,7 +35,10 @@ function ProjectsList() {
     useState<ProjectsResponse>();
   const dataDog = useDatadogRum();
   const navigate = useNavigate();
-  const [toggleModal, setToggleModal] = useState<boolean>(false);
+  const [toggleModal, setToggleModal] = useLocalStorage(
+    "toggleRoundApplicationModal",
+    false
+  );
   const [show, setShow] = useState(true);
   const [roundToApply] = useLocalStorage("roundToApply", null);
   const [roundInfo, setRoundInfo] = useState<RoundResponse | null>(null);
@@ -44,6 +51,7 @@ function ProjectsList() {
   const roundChain = roundToApply
     ? Number(roundToApply.split(":")[0])
     : chain?.id;
+  console.log("DASA roundChain", roundChain);
   const { roundManagerClient } = useClients(roundChain);
 
   const subgraphStatus = useFetchedSubgraphStatus();
@@ -57,7 +65,6 @@ function ProjectsList() {
     if (result) {
       setProjectsQueryResult(result!);
     }
-    setLoading(false);
   }
 
   useEffect(() => {
@@ -111,22 +118,33 @@ function ProjectsList() {
       );
     }
   }, [subgraphStatus]);
-
-  useEffect(() => {
-    if (
-      roundToApply !== null &&
-      projectsQueryResult &&
-      projectsQueryResult.projects.length > 0
-    ) {
-      setToggleModal(true);
-    }
-  }, [projectsQueryResult?.projects.length, roundToApply]);
-
+  /*
+    const projectIdToHex = (strId: string) => {
+      let ret = "0x";
+      for (let index = 0; index < strId.length; index += 1) {
+        console.log("INDEX", index);
+        ret += strId.charCodeAt(index).toString(16);
+      }
+      return ethers.utils.zeroPad(ret, 64).toString();
+    };
+  */
   useEffect(() => {
     const hasUserAppliedToRouond = async (): Promise<boolean> => {
+      // need to map throgh the project array
       const projectId = projectsQueryResult?.projects[0]?.id;
       if (projectId) {
-        // console.log("projectId in bytes32 =>", formatBytes32String(projectId));
+        console.log("JARO", base64.decode(projectId).toString());
+
+        // y.charCodeAt(0).toString(16)
+        // '32'
+        // y.charCodeAt(1).toString(16)
+        // '30'
+
+        console.log("projectId in bytes32 =>", formatBytes32String(projectId));
+        console.log(
+          "projectId in bytes32 =>",
+          parseBytes32String(formatBytes32String(projectId))
+        );
         await fetchIfUserHasAppliedToRound(
           roundManagerClient!,
           formatBytes32String(projectId)
@@ -148,13 +166,15 @@ function ProjectsList() {
           // current roundId
           console.log("Rounds =>", roundsApplied?.rounds);
         }
+        setLoading(false);
       }
-
       return false; // no project id...
     };
-
+    if (!loading) {
+      return;
+    }
     hasUserAppliedToRouond();
-  }, [projectsQueryResult?.projects]); // projectsQueryResult?.projects
+  }, [projectsQueryResult?.projects]);
 
   return (
     <div className="flex flex-col flex-grow h-full mx-4 sm:mx-0">
@@ -211,7 +231,11 @@ function ProjectsList() {
       )}
 
       <CallbackModal
-        modalOpen={show && toggleModal}
+        modalOpen={
+          typeof toggleModal === "boolean"
+            ? toggleModal
+            : toggleModal === "true"
+        }
         confirmText="Apply to Grant Round"
         confirmHandler={() => {
           const chainId = roundToApply?.split(":")[0];

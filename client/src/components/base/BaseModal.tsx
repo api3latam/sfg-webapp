@@ -25,8 +25,10 @@ export function BaseModal({
   title,
   footer,
 }: BaseModalProps): JSX.Element {
+  console.log("isOpen", isOpen);
+  const modalOpen = isOpen;
   return (
-    <Modal isOpen={isOpen} onClose={onClose} isCentered>
+    <Modal isOpen={modalOpen} onClose={onClose} isCentered>
       <ModalOverlay />
       <ModalContent>
         <>

@@ -25,6 +25,14 @@ function Round() {
   const { roundId, chainId } = params;
   const { roundManagerClient } = useClients(Number(chainId));
 
+  const [toggleRoundApplicationModal, setToggleRoundApplicationModal] =
+    useLocalStorage("toggleRoundApplicationModal", false);
+
+  useEffect(() => {
+    console.log(roundToApply);
+    console.log(toggleRoundApplicationModal);
+  }, []);
+
   async function fetchRound() {
     if (!roundManagerClient) return;
     const roundInfo = await useFetchRoundByAddress(
@@ -69,12 +77,9 @@ function Round() {
   useEffect(() => {
     if (roundId) {
       setRoundToApply(`${chainId}:${roundId}`);
+      setToggleRoundApplicationModal(true);
     }
   }, [roundId]);
-
-  useEffect(() => {
-    console.log("roundToApply", roundToApply);
-  }, [roundToApply]);
 
   if (Number(chainId) !== chain!.id) {
     return (

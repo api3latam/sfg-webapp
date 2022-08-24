@@ -25,6 +25,10 @@ function Apply() {
   const params = useParams();
   // const navigate = useNavigate();
   const [roundToApply, setRoundToApply] = useLocalStorage("roundToApply", null);
+
+  const [toggleRoundApplicationModal, setToggleRoundApplicationModal] =
+    useLocalStorage("toggleRoundApplicationModal", false);
+
   const [loading, setLoading] = useState(true);
   const [roundData, setRoundData] = useState<BaseRound>();
 
@@ -35,14 +39,16 @@ function Apply() {
   const { roundManagerClient } = useClients(Number(chainId));
 
   useEffect(() => {
-    if (roundId) {
-      setRoundToApply(`${chainId}:${roundId}`);
-    }
-  }, [roundId]);
+    console.log(roundToApply);
+    console.log(toggleRoundApplicationModal);
+  }, []);
 
   useEffect(() => {
-    console.log("roundToApply", roundToApply);
-  }, [roundToApply]);
+    if (roundId) {
+      setRoundToApply(`${chainId}:${roundId}`);
+      setToggleRoundApplicationModal(true);
+    }
+  }, [roundId]);
 
   async function fetchRound() {
     if (!roundManagerClient) return;
